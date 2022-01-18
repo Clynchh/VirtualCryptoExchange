@@ -1,0 +1,17 @@
+a{
+    text-decoration: none;
+}
+
+.asset-container{
+    border-radius: 5px;
+    border-width: 3px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    background-color: #353A40;
+    list-style-type: none;
+    color: #eee;
+}

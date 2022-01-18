@@ -1,0 +1,38 @@
+CREATE DATABASE exchange;
+
+CREATE TABLE users (
+    UserID INT NOT NULL,
+    Username varchar(15) NOT NULL,
+    HashPassword varchar(64) NOT NULL,
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE user_assets (
+    UserID INT NOT NULL,
+    AssetSymbol varchar(6) NOT NULL,
+    Quantity FLOAT(20) NOT NULL,
+    -- will be used to calculate value and ROI
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE Orders (
+    UserID INT NOT NULL,
+    OrderID INT NOT NULL,
+    OrderTime TIMESTAMP NOT NULL,
+    OrderType varchar(10),
+    OrderQuantity 
+    AssetSymbol
+    PRIMARY KEY (OrderID)
+
+)
+
+e.g.: 
+
+INSERT INTO Users (UserID, Username, Password) 
+VALUES (1234, "Itscors123", "e0cb05d98fc5f38266f3ea8376d84c61a8c16050240e439e7ae96f12e2cb30a4");
+
+UPDATE user_assets 
+SET AssetSymbol = "BTC", Quantity = 0.03;
+
+INSERT INTO Orders (UserID, OrderID, OrderTime, OrderType, OrderQuantity, AssetSymbol)
+VALUES (1234, 55912, (TO_TIMESTAMP('2014-07-02 06:14:00.742000000', 'YYYY-MM-DD HH24:MI:SS.FF')), "sell", 0.5, "ETH");
