@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Assets{% endblock %}
+
+{%block content %}
+{% for symbol, mkt_cap in currency_metadata %}
+    <a href="/trading/{{ symbol }}GBP"><ul class="item-container">
+        <li class="name asset">Name: {{ symbol_names[symbol] }}</li>
+        <li class="ticker asset">Symbol: {{ symbol }}</li>
+        <li class="name asset">Market cap: £{{ mkt_cap }}</li>
+    </ul></a>
+{% endfor %}
+{% endblock %}

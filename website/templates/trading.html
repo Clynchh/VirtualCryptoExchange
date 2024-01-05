@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Trading{% endblock %}
+
+{% block content %}
+<body>
+    <!--<meta http-equiv="refresh" content="60">-->
+    <header>
+        <h1>Trading</h1>
+        <h1>{% block trading_pair %}{% endblock %} - £<div id="price"></div></h1>
+    </header>
+    <h2><a href="/assets">Go back to Assets</a></h2>
+    <div class="container">
+        <div class="chart">
+            <canvas id="financial-chart"></canvas>
+        </div>
+        <script>
+            const price_url = "https://api.binance.com/api/v3/avgPrice?symbol={% block symbol %}{% endblock %}GBP"
+
+
+            function updateLineChart(interval, limit) {
+                async function fetchClosePrices(){
+                    const url = "https://api.binance.com/api/v3/klines?interval=" + interval + "&limit=" + limit + "&symbol={% block symbol_2 %}{% endblock %}GBP"
+                    console.log(url)
+                    const response = await fetch(url);
+                    //wait till request completed
+                    const data = await response.json();
+                    return data;
+                }
+
+                
+                fetchClosePrices().then(data => {
+                    const close_prices = []
+                    for (let i=0;i<data.length;i++) {
+                        close_prices.push(parseFloat(data[i][4]))
+                    }
+                    myChart.config.data.datasets[0].data = close_prices;
+                    myChart.update();
+                })
+                
+            };
+            updateLineChart("1d", "365")
+            
+
+            async function getPrice(){
+                const response = await fetch(price_url);
+                const data = await response.json();
+                let current_price = parseFloat(data["price"]);
+                current_price = current_price.toFixed(2).toString();
+                current_price =  current_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                document.getElementById("price").innerHTML = current_price;
+                return current_price;
+            }
+            getPrice();
+
+
+            function produceLabels(interval, limit, interval_amount){
+                var temp_labels = []
+                const time_frame = interval
+                var time = limit
+                for (let i=0;i<time;i++){
+                    if (i === 0){
+                        temp_labels.push("now")
+                    }
+                    else{
+                    temp_labels.push(i*interval_amount + " "+ time_frame + " "+"ago")
+                    }
+                }
+                var new_temp_labels = temp_labels.reverse()
+                //myChart.config.data.labels = new_temp_labels;
+                //myChart.update()
+                return new_temp_labels;
+            } 
+            
+
+            const labels = produceLabels("days", 365, 1)
+            const graph_color = "{{ graph_color }}";
+
+            const data = {
+            labels: labels,
+            datasets: [{
+                label: '{% block symbol_4 %}{% endblock %} Price (£)',
+                backgroundColor: 'rgb(255,255,255)',
+                borderColor: graph_color,
+                data: [],
+                color: '#ffff00',
+                pointRadius: 2.5,
+                pointHoverRadius: 6,
+                pointHoverBorderColor: 'rgb(0,0,0)'
+            }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text:"Price of {% block symbol_3 %}{% endblock %}"
+                        }
+                    }
+                }
+                };
+        </script>
+        <script>
+            /*Rendering chart to web page*/
+            const myChart = new Chart(
+              document.getElementById('financial-chart'),
+              config
+            );
+          </script>
+
+
+        <div class="other-container">
+            <div class="form-container">
+                <h3>Time Period:</h3>
+                <button type="button" class="btn btn-primary" onclick="produceLabels('minutes', 288, 5); updateLineChart('5m', '288');">24 hours</button>
+                <button type="button" class="btn btn-primary" onclick="produceLabels('hours', 168, 1); updateLineChart('1h', '168');">7 days</button>
+                <button type="button" class="btn btn-primary" onclick="produceLabels('hours', 360, 2); updateLineChart('2h', '360');">30 days</button>
+                <button type="button" class="btn btn-primary" onclick="produceLabels('hours', 360, 6); updateLineChart('6h', '360');">3 months</button>
+                <button type="button" class="btn btn-primary" onclick="produceLabels('days', 365, 1); updateLineChart('1d', '365');">12 months</button>
+            <style>
+                .btn{
+                    margin-bottom: 1em;
+                }
+            </style>
+            </div>
+            <div class="metadata">
+                <div id="mkt-cap">Market cap: £{{ mkt_cap }}</div>
+                <div id="24-vol">24h vol: £{{ day_vol }}</div>
+                <div id="200-MA">200 day MA: £{{ MA_200 }}</div>
+                <div id="50-MA">50 day MA: £{{ MA_50 }}</div>
+                <div id="24h-change">24 hour price change: {{ day_change }}%</div>
+                <div id="7d-change">7 day change: {{ week_change }}%</div>
+            </div>
+            <h1 class="order">PLACE AN ORDER:</h1>
+            <form method="POST">
+                <label for="quantity">Quantity:</label>
+                <input type="text" id="quantity" name="quantity" class="quantity" placeholder="Enter a quantity:">
+                <input type="submit" value="BUY" class="btn btn-success" name="place-order">
+                <input type="submit" value="SELL" class="btn btn-danger" name="place-order">
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

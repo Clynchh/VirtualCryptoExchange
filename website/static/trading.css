@@ -1,0 +1,53 @@
+body{
+    background-color: #333;
+    color:white;
+}
+.container{
+    display: grid;
+    grid-template-columns: 1fr ;
+    background-color: #ccc;
+    border-radius: 10px;
+    color: black;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.other-container{
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    margin-top:25 px;
+    margin-left: 15px;
+}
+
+.metadata{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.chart{
+    border-radius:10px;
+}
+
+header, #price{
+    display: inline;
+}
+
+a{
+    color:white;
+}
+
+.actions{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.quantity{
+    height: 3em;
+    border: 2px solid black;
+}
+
+.quantity:hover {
+    border: 2px solid red;
+    transition: all 0.6s ease-in-out;
+}

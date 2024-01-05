@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Rankings{% endblock %}
+
+{%block content %}
+{% for name, metric in user_portfolios %}
+    <ul class="item-container">
+        <li>Username: {{ name }}</li>
+        <li>Rank: {{ loop.index }}</li>
+        <li>Portfolio Value: £{{ metric[0] }}</li>
+        <li>All time ROI: {{ metric[1] }}%</li>
+    </ul>
+{% endfor %}
+{% endblock %}

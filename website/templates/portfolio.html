@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+<div class="chart">
+    <div class="whole-container">
+        <div class="container-left">
+            <h1>Portfolio</h1>
+            <canvas id="portfolio-chart"></canvas>
+        </div>
+        <div class="container-right">
+            <ul>
+                <li><h2>Account</h2></li>
+                <li><h3>Username: {{ session["username"] }}</h3></li>
+                <br>
+                <li><h2>Portfolio Performance</h2></li>
+                <li><h3>Portfolio Value: £{{ portfolio_value }}</h3></li>
+                <li><h3>All time ROI: {{ portfolio_performance }}%</h3></li>
+                <li><h3>GBP balance: £{{ gbp_balance }}</h3></li>
+            </ul>
+        </div>
+    </div>
+    <div class="report">PORTFOLIO REPORT USING THE MEAN REVERSION PRICE PREDICTION MODEL :</div>
+    <div class="report" id="report"></div>
+</div>
+{% for i in report %}
+{{ i }}
+<br>
+{% endfor %}
+<style type="text/css">
+    .whole-container{
+        display:grid;
+        grid-template-columns: repeat(2,1fr);
+    }
+    .whole-container li{
+        list-style-type: none;    
+    }
+    .whole-container h2{
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+    const user_assets = {{ user_assets_in_GBP }}
+    const data = {
+        labels: [
+            'Bitcoin-BTC',
+            'Ethereum-ETH',
+            'Binance Coin-BNB',
+            'Cardano-ADA',
+            'Solana-SOL',
+            'Ripple-XRP',
+            'Polkadot-DOT',
+            'Dogecoin-DOGE',
+            'Polygon-MATIC',
+            'Chainlink-LINK',
+            'Litecoin-LTC',
+            'VeChain-VET',
+            'PancakeSwap-CAKE',
+            'Enjin-ENJ',
+            'THORChain-RUNE',
+            'Terra-LUNA'
+        ],
+    datasets: [{
+        label: 'My First Dataset',
+        data: user_assets,
+        backgroundColor: [
+        '#D97000',//orange-gold:btc
+        '#808080',//grey:eth
+        '#FFCC00',//yellow-gold:bnb
+        '#001B7C',//navy-blue:ada
+        '#00E0D9',//teal:sol
+        '#000000',//black:xrp
+        '#FF00AD',//pink:dot
+        '#FAF580',//light-gold:doge
+        '#C068FF',//light-purple:matic
+        '#A7BEFE',//light-blue:link
+        '#0000FF',//blue:ltc
+        '#FFFFFF',//white:vet
+        '#C4A484',//light-brown:cake
+        '#4F008F',//purple-blue:enj
+        '#005F53'//dark-teal:rune
+        ],
+        hoverOffset: 15
+    }]
+    };
+</script>
+<script>
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text:"Value of your assets (GBP - £)"
+                        }
+                    }
+                    
+                }
+}
+</script>
+<script>
+    const myChart = new Chart(
+              document.getElementById('portfolio-chart'),
+              config
+            );
+</script>
+
+
+{% endblock %}

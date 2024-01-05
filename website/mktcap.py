@@ -32,6 +32,7 @@ def get_mkt_cap():
 
 
     sorted_mkt_cap = {key: val for key, val in sorted(mkt_cap_dict.items(), key=lambda x: x[1], reverse=True)}
+    #sort the dict into descending order of values (market cap)
 
     for key, val in sorted_mkt_cap.items():
         sorted_mkt_cap[key] = format(val, ".2f")
@@ -39,6 +40,10 @@ def get_mkt_cap():
     for key, val in sorted_mkt_cap.items():
         sorted_mkt_cap[key] = format(float(val), ",")
 
+    for i in range(len(sorted_mkt_cap)):
+        if i >= 10:
+            sorted_mkt_cap.popitem()
+    #shorten the list of cryptos from 17 to 10 (as per the requirements) by popping the last 2 items
 
     return sorted_mkt_cap
 
@@ -46,8 +51,6 @@ def get_mkt_cap():
 
 #sorted_mkt_cap is a dict containing the market cap (in gbp) descending of the 
 #crypto/gbp pairs listed on binance, with their according symbol name
-
-
 
 
 

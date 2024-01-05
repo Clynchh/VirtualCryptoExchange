@@ -1,0 +1,32 @@
+a{
+    text-decoration: none;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr ;
+    background-color: #ccc;
+    border-radius: 10px;
+    color: black;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.item-container{
+    border-radius: 5px;
+    border-width: 3px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    background-color: #353A40;
+    list-style-type: none;
+    color: #eee;
+    height: 4em;
+}
+
+#portfolio-chart{
+    padding-bottom: 0.5em;
+}
